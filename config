@@ -1,0 +1,5 @@
+module.exports = {
+  newUserMessage: 'hi ass',
+  host: 'localhost',
+  port: '3003'
+}

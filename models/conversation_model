@@ -1,0 +1,12 @@
+const mongoose = require('mongoose');
+
+const conversationSchema = new mongoose.Schema({
+    user: Object,
+    from: Object,
+    query: Object,
+    reply: Object,
+    creationDate: { type: Date, default: Date.now }
+});
+
+// Компилируем и Экспортируем модель
+module.exports = mongoose.model('Conversation', conversationSchema);
