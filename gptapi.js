@@ -15,7 +15,7 @@ const TOKEN = process.env.TOKEN;
 
 app.use(cors());
 app.use(Express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(Express.static(path.join(__dirname, "public")));
 
 
 mongoose.connect(`mongodb://${process.env.MONGO_URI}/gptapi`);
