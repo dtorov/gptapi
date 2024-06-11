@@ -53,6 +53,7 @@ app.post('/ask', async function (req, res) {
   app.get('/messages', async function (req, res) {
     try {
         const _data = await models.Conversation.find();
+        console.log('get messages _data.length: ', _data.length);
         res.send(_data);
     } catch(err) {
         console.error(err.message)
