@@ -38,7 +38,7 @@ app.post('/ask', async function (req, res) {
         console.dir(reply, { depth: null , colors: true});
         const conversation = {
             user: requestData.user || {name: 'Dmitry Torov', type: 'web'},
-            from: requestData.user || {name: 'Dmitry Torov', type: 'bot'},
+            from: requestData.from || {name: 'Dmitry Torov', type: 'bot'},
             query, reply
         }
         await models.Conversation(conversation).save();
@@ -48,6 +48,16 @@ app.post('/ask', async function (req, res) {
         res.send({error: true, message: err.message || 'unknown'});
     }
 
+  });
+
+  app.get('/messages', async function (req, res) {
+    try {
+        const _data = await models.Conversation.find();
+        res.send(_data);
+    } catch(err) {
+        console.error(err.message)
+        res.send({error: true, message: err.message || 'unknown'});
+    }
   });
 
   const askOpenai = async function(query) {
