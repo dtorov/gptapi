@@ -1,6 +1,5 @@
 // require('dotenv').config()
 
-console.log(process.env, process.env.TOKEN)
 
 const path      = require('path');
 const Express = require("express");
@@ -15,9 +14,8 @@ const { host, port, newUserMessage } = require("./config");
 const TOKEN = process.env.TOKEN;
 
 app.use(cors());
+app.use(Express.static('public'));
 app.use(Express.json());
-app.use(Express.static(path.join(__dirname, "public")));
-
 
 mongoose.connect(`mongodb://${process.env.MONGO_URI}/gptapi`);
 
