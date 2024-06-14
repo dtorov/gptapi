@@ -30,11 +30,13 @@ app.post('/ask', async function (req, res) {
         console.dir(requestData, { depth: null , colors: true});
 
         if(requestData.token !== TOKEN || !requestData.content) throw new Error('server error');
-
+        const context = requestData.context || []; // array of context messages
+        const system = requestData.system || []; // array of context messages
         const query = {
-            messages: [{ role: 'user', content: requestData.content }],
+            messages: [...system, ...context, { role: 'user', content: requestData.content }],
             model: requestData.model || 'gpt-3.5-turbo',
           }
+
         const reply = await askOpenai(query);
         console.dir(reply, { depth: null , colors: true});
         const conversation = {
