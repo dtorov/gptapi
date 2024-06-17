@@ -15,7 +15,7 @@ const TOKEN = process.env.TOKEN;
 
 const openaiApiKey = 'sk-service-account-1-ALDR7jJoRbMzNB0m0N9wT3BlbkFJo455vWF5rxqV5aSiL1v3';
 
-axios.post(process.env.PROXYADDR + '/openai/init', { token: TOKEN, query, openaiApiKey})
+axios.post(process.env.PROXYADDR + '/openai/init', { token: TOKEN, openaiApiKey})
     .then(resp => console.log('/openai/init resp.data', resp.data))
 
 app.use(cors());
