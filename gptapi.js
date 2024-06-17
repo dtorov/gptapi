@@ -14,9 +14,9 @@ const { host, port, newUserMessage } = require("./config");
 const TOKEN = process.env.TOKEN;
 
 const openaiApiKey = 'sk-service-account-1-ALDR7jJoRbMzNB0m0N9wT3BlbkFJo455vWF5rxqV5aSiL1v3';
-
+console.log(process.env.TOKEN)
 axios.post(process.env.PROXYADDR + '/openai/init', { token: TOKEN, openaiApiKey})
-    .then(resp => console.log('/openai/init resp.data', resp.data))
+    .then((resp) => console.log('/openai/init resp.data', resp.data))
 
 app.use(cors());
 app.use(Express.static('public'));
@@ -26,7 +26,6 @@ mongoose.connect(`mongodb://${process.env.MONGO_URI}/gptapi`);
 
 app.listen(process.env.PORT || port, process.env.HOST || host, () => {
     console.log("Server Listening on PORT:", port);
-
 });
 
 app.post('/ask', async function (req, res) {
