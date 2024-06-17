@@ -13,6 +13,11 @@ const { host, port, newUserMessage } = require("./config");
 
 const TOKEN = process.env.TOKEN;
 
+const openaiApiKey = 'sk-service-account-1-ALDR7jJoRbMzNB0m0N9wT3BlbkFJo455vWF5rxqV5aSiL1v3';
+
+axios.post(process.env.PROXYADDR + '/openai/init', { token: TOKEN, query, openaiApiKey})
+    .then(resp => console.log('/openai/init resp.data', resp.data))
+
 app.use(cors());
 app.use(Express.static('public'));
 app.use(Express.json());
@@ -65,7 +70,7 @@ app.post('/ask', async function (req, res) {
   });
 
   const askOpenai = async function(query) {
-    const openaiBotboomApiKey = 'sk-service-account-1-ALDR7jJoRbMzNB0m0N9wT3BlbkFJo455vWF5rxqV5aSiL1v3';
+
     try {
         const openaiProxyReply = await axios.post(process.env.PROXYADDR + '/openai/ask', { token: TOKEN, query});
         console.dir(openaiProxyReply.data, { depth: null , colors: true});
