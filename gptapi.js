@@ -27,7 +27,7 @@ app.listen(process.env.PORT || port, process.env.HOST || host, () => {
 app.post('/ask', async function (req, res) {
     try {
         const requestData = req.body;
-        console.dir(requestData, { depth: null , colors: true});
+
 
         if(requestData.token !== TOKEN || !requestData.content) throw new Error('server error');
         const context = requestData.context || []; // array of context messages
@@ -36,7 +36,7 @@ app.post('/ask', async function (req, res) {
             messages: [...system, ...context, { role: 'user', content: requestData.content }],
             model: requestData.model || 'gpt-3.5-turbo',
           }
-
+        console.dir(query, { depth: null , colors: true});
         const reply = await askOpenai(query);
         console.dir(reply, { depth: null , colors: true});
         const conversation = {
@@ -65,8 +65,9 @@ app.post('/ask', async function (req, res) {
   });
 
   const askOpenai = async function(query) {
+    const openaiBotboomApiKey = 'sk-service-account-1-ALDR7jJoRbMzNB0m0N9wT3BlbkFJo455vWF5rxqV5aSiL1v3';
     try {
-        const openaiProxyReply = await axios.post(process.env.PROXYADDR + '/ask', { token: TOKEN, query});
+        const openaiProxyReply = await axios.post(process.env.PROXYADDR + '/openai/ask', { token: TOKEN, query});
         console.dir(openaiProxyReply.data, { depth: null , colors: true});
         return openaiProxyReply.data;
     } catch(err) {
