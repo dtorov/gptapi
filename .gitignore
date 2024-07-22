@@ -1,3 +1,6 @@
 node_modules/*
 node_modules
+public/.well-known
+.well-known
+ecosystem.config.js
 .env
