@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const systemSettingsSchema = new mongoose.Schema({
     yagpt: {
+        OAuth_token: 'y0_AgAAAAALbAxQAATuwQAAAAELOCcAAADOm3lt-F1FRKDeuQN86H0iBAJZXw',
         IAM_TOKEN: { type: String, default: ''},
         FOLDER_ID: { type: String, default: ''},
         model: { type: String, default: ''},

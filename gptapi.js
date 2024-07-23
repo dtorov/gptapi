@@ -7,6 +7,8 @@ const app = Express();
 const cors = require("cors");
 const axios = require('axios');
 const mongoose = require('mongoose');
+const CronJob   = require('cron').CronJob;
+
 const models = require('./models');
 
 const { host, port, newUserMessage } = require("./config");
@@ -31,10 +33,7 @@ app.use(Express.json());
 mongoose.connect(`mongodb://${process.env.MONGO_URI}/gptapi`);
 
 app.listen(process.env.PORT || port, process.env.HOST || host, () => {
-    console.log("Server Listening on PORT:", port);
-
-
-
+    console.log(moment().format('YYYY/MM/DD HH:mm:ss') + ": Server Listening on PORT:", port);
 });
 
 const start = function () {
@@ -51,9 +50,9 @@ const start = function () {
         defaultModel: 'yandexgpt-lite',
         apiURL: 'https://llm.api.cloud.yandex.net/foundationModels/v1/completion'
     }
-  }  
+  }
   models.SystemSettings(_sett).save();
-} 
+}
 
 
 app.post('/ask', async function (req, res) {
@@ -159,12 +158,12 @@ app.post('/yagpt/v1/chat/completions', async function (req, res) {
 
   const askYaGpt = async function(query, settings) {
     try {
-        const config = { 
-            headers: { 
-                "Content-Type": "application/json", 
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
                 "Authorization": `Bearer ${settings.IAM_TOKEN}`,
                 "x-folder-id": `${settings.FOLDER_ID}`
-            } 
+            }
         }
         const yaGptReply = await axios.post(settings.apiURL, query, config);
         console.dir(yaGptReply.data, { depth: null , colors: true});
@@ -174,3 +173,20 @@ app.post('/yagpt/v1/chat/completions', async function (req, res) {
         return ({error: true});
     }
   }
+
+  const updateYaGptToken = new CronJob('15 * * * * *', async function() {
+    console.log(moment().format('YYYY/MM/DD HH:mm:ss') + ' renew Authorization');
+
+    const _settings = await models.SystemSettings.findOne({});
+    const _new_IAM_TOKEN = await axios.post('https://iam.api.cloud.yandex.net/iam/v1/tokens', { "yandexPassportOauthToken": _settings.OAuth_token });
+
+    console.dir(_new_IAM_TOKEN.data, { depth: null , colors: true});
+
+
+
+  }, function () {
+    console.log(moment().format('YYYY/MM/DD HH:mm:ss') + ' renew Authorization stop');
+  },
+  true,
+  'Europe/Moscow'
+);
